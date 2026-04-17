@@ -17,7 +17,7 @@ const start = async () => {
   });
 
   try {
-    // 1. Plugins 자동 로드 (Swagger, Socket.io, C)
+    // 1. Plugins 자동 로드 (Swagger, Socket.io, CORS 등)
     await fastify.register(autoload, {
       dir: join(__dirname, 'src/plugins'),
     });
