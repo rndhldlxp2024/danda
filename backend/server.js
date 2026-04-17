@@ -37,6 +37,13 @@ fastify.get('/health', async () => {
   };
 });
 
+fastify.get('/ping', async(request, reply) => {
+  return {
+    message: 'pong',
+    timestamp: new Date().toISOString(),
+  };
+});
+
 /**
  * Server Launcher
  */
