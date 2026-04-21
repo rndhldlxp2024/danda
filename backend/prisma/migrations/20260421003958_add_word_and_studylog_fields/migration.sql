@@ -1,0 +1,7 @@
+-- AlterTable
+ALTER TABLE "StudyLog" ADD COLUMN     "lastStudiedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN     "streak" INTEGER NOT NULL DEFAULT 0;
+
+-- AlterTable
+ALTER TABLE "Word" ADD COLUMN     "difficulty" INTEGER NOT NULL DEFAULT 1,
+ADD COLUMN     "phonetic" TEXT;

@@ -1,0 +1,5 @@
+-- CreateEnum
+CREATE TYPE "PartOfSpeech" AS ENUM ('NOUN', 'VERB', 'ADJECTIVE', 'ADVERB', 'PRONOUN', 'PREPOSITION', 'CONJUNCTION', 'INTERJECTION');
+
+-- AlterTable
+ALTER TABLE "Word" ADD COLUMN     "partOfSpeech" "PartOfSpeech" NOT NULL DEFAULT 'NOUN';

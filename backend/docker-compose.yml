@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:16
+    container_name: danda-db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: dandapassword
+      POSTGRES_DB: dandadb
+    ports:
+      - "5435:5432"
+    volumes:
+      - danda_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  danda_postgres_data:

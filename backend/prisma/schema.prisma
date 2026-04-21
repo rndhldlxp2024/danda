@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  TEACHER
+  ADMIN
+}
+
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  name      String
+  role      Role      @default(TEACHER)
+  classes   Class[]
+  wordSets  WordSet[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Class {
+  id         String    @id @default(cuid())
+  grade      Int
+  classNum   Int
+  subject    String
+  teacherId  String
+  teacher    User      @relation(fields: [teacherId], references: [id])
+  students   Student[]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model Student {
+  id         String     @id @default(cuid())
+  studentNum Int
+  name       String
+  gender     String
+  classId    String
+  class      Class      @relation(fields: [classId], references: [id])
+  studyLogs  StudyLog[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+}
+
+model WordSet {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  teacherId   String
+  teacher     User     @relation(fields: [teacherId], references: [id])
+  words       Word[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+// 1. 사용할 품사 목록을 정의합니다.
+enum PartOfSpeech {
+  NOUN        // 명사
+  VERB        // 동사
+  ADJECTIVE   // 형용사
+  ADVERB      // 부사
+  PRONOUN     // 대명사
+  PREPOSITION // 전치사
+  CONJUNCTION // 접속사
+  INTERJECTION// 감탄사
+}
+
+model Word {
+  id          String       @id @default(cuid())
+  english     String
+  korean      String
+  partOfSpeech PartOfSpeech @default(NOUN) // 2. 품사 필드 추가 (기본값 명사)
+  example     String?
+  phonetic    String?
+  difficulty  Int          @default(1)
+  wordSetId   String
+  wordSet     WordSet      @relation(fields: [wordSetId], references: [id])
+  studyLogs   StudyLog[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+
+model StudyLog {
+  id          String   @id @default(cuid())
+  studentId   String
+  wordId      String
+  isMemorized Boolean  @default(false)
+  wrongCount  Int      @default(0)
+  streak      Int      @default(0)    // 추가: 연속 정답 횟수
+  lastStudiedAt DateTime @default(now()) // 추가: 최근 학습일
+  student     Student  @relation(fields: [studentId], references: [id])
+  word        Word     @relation(fields: [wordId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([studentId, wordId])
+}
